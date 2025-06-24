@@ -1,0 +1,9 @@
+This document describes how Pyokit, a Python toolkit, handles retrotransposon data. It details the two core data structures: `Retrotransposon` for general information and `RetrotransposonOccurrence` for specific instances, including genomic location, truncation details, and orientation. Crucially, `RetrotransposonOccurrence` objects link to their parent `Retrotransposon` and can optionally store full alignments for more accurate "liftover" operations.
+
+The document then focuses on loading retrotransposon annotations, specifically from RepeatMasker. It explains how to load:
+
+*   **RepeatMasker coordinate annotations:** Using `pyokit.io.repeatMaskerIterators.repeat_masker_iterator`.
+*   **RepeatMasker full alignments:** Through `pyokit.io.alignmentIterators.repeat_masker_alignment_iterator`. Due to their size, random access is achieved by building an index using `IndexedFile` and a unique ID extraction function.
+*   **RepeatMasker annotations with on-demand full alignments:** By passing an alignment index to the `repeat_masker_iterator`, allowing `RetrotransposonOccurrence` objects to transparently access their full alignments when needed.
+
+Finally, the document discusses "liftover" operations, which involve converting genomic coordinates within a retrotransposon occurrence to coordinates relative to the consensus sequence. It highlights the complexities introduced by insertions and deletions, which require full alignment data for accurate liftover. A code example demonstrates a "coordinate-only liftover" to analyze the overlap frequency of BED regions with retrotransposon consensus sequences when full alignment data is not available.
